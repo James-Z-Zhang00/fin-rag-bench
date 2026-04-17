@@ -1,0 +1,45 @@
+Financial Investment Glossary
+
+Key Financial Metrics:
+
+Revenue (Sales):
+Total income generated from normal business operations. Calculated by multiplying price by quantity sold. Also called "top line" because it appears at the top of income statements.
+
+Net Income (Profit):
+Revenue minus all expenses, taxes, and costs. Also called "bottom line" or "earnings." Key profitability metric for investors.
+
+Earnings Per Share (EPS):
+Net income divided by total shares outstanding. Indicates how much profit is allocated to each share. Higher EPS generally indicates better profitability.
+
+Price-to-Earnings Ratio (P/E Ratio):
+Stock price divided by earnings per share. Common valuation metric. Average market P/E is around 15-20. Higher P/E may indicate growth expectations or overvaluation.
+
+Market Capitalization (Market Cap):
+Total value of company's outstanding shares. Calculated as share price multiplied by shares outstanding. Categories:
+- Large Cap: >$10 billion
+- Mid Cap: $2-10 billion
+- Small Cap: $300 million - $2 billion
+
+Free Cash Flow (FCF):
+Cash from operations minus capital expenditures. Represents cash available for dividends, debt repayment, or reinvestment. More reliable than net income.
+
+Gross Margin:
+(Revenue - Cost of Goods Sold) / Revenue. Expressed as percentage. Indicates pricing power and efficiency. Software companies typically have 70-90% gross margins.
+
+Operating Margin:
+Operating income divided by revenue. Shows profitability from core operations before interest and taxes. Higher margins indicate better operational efficiency.
+
+Return on Equity (ROE):
+Net income divided by shareholder equity. Measures how efficiently company uses shareholder capital. ROE above 15% is generally considered good.
+
+Debt-to-Equity Ratio:
+Total liabilities divided by shareholder equity. Indicates financial leverage. Ratio above 2.0 may indicate high financial risk.
+
+Year-over-Year (YoY):
+Comparison method that compares current period to same period in previous year. Eliminates seasonal variations. Example: Q4 2023 vs. Q4 2022.
+
+Analyst Consensus:
+Average of analyst estimates for metrics like EPS or revenue. Companies "beat" expectations when actual results exceed consensus.
+
+Guidance:
+Forward-looking statements from management about expected future performance. Typically provided quarterly or annually.
