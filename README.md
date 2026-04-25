@@ -1,21 +1,46 @@
 # FinRAGBench
 
-Here's the SEC EDGAR files I hand-picked for finance domain RAG system test, will update with full QA set. The QA set currently focuse on information retrieval quality evluation and graph building quality for GraphRAG system in `.html`, `.htm` and `.pdf` formats. All files are from the official site `https://www.sec.gov/edgar/search/`
+A curated SEC EDGAR benchmark for evaluating financial RAG systems — covering information retrieval quality, cross-document reasoning, and graph structure understanding. All source filings are hand-picked from the official [SEC EDGAR](https://www.sec.gov/edgar/search/) public database in `.html`, `.htm`, and `.pdf` formats.
 
-*The current question sets targeting the hybrid search (graph + vector) pipeline evaluation*
+The question sets are designed to evaluate **hybrid search pipelines** (graph + vector), with questions stratified by retrieval tier so that architectural differences between pure vector, graph-guided, and entity-topology approaches are measurable and reproducible.
 
-**Folder List**
-- `small/` - 2 sample files for smoke test
-- `medium/` - 15 files for a regular test
-- `large/` - 60 files for big end-to-end system test
+---
 
-**File List**
-- `sample-question-set.jsonl` - the sample questions made from the SEC filings inside `medium/`, the answers are yet to varify, please don't use for now : )
+## Folder Structure
 
-**Question Types**
-1. Exact answer
-2. Short phrase
-3. Boolean / Yes-No
-4. Ordered List
-5. Unordered List
-6. Numerical range
+| Folder | Files | Purpose |
+|---|---|---|
+| `small/` | 2 | Smoke test — fast pipeline sanity check |
+| `medium/` | 15 | Standard evaluation — 5 Fortune 500 companies, 3 filing types |
+| `large/` | 60 | End-to-end system test (in progress) |
+
+---
+
+## Question Sets
+
+| File | Status | Description |
+|---|---|---|
+| `medium/question-set-60.jsonl` | **Ready** | 60 verified questions (Q061–Q120) grounded in XBRL; see `medium/README.md` |
+| `sample-question-set.jsonl` | Draft | Early sample questions, answers unverified — do not use for evaluation |
+
+---
+
+## Question Types
+
+| Type | Description |
+|---|---|
+| `exact_number` | A specific financial figure (dollar amount, share count) |
+| `exact_name` | A proper name, ticker symbol, or identifier |
+| `short_phrase` | A descriptive or multi-part answer |
+| `boolean` | Yes / No with supporting evidence |
+| `numerical_range` | A computed ratio or percentage with an acceptable tolerance |
+
+---
+
+## Retrieval Tiers
+
+- **`pure_vector`** — Single-document lookup; baseline for dense retrieval quality
+- **`hybrid`** — Cross-document or cross-period comparison requiring graph navigation + vector extraction
+- **`pure_graph`** — Entity and relationship queries (incorporation state, ticker, filing structure)
+
+For full methodology, scoring rubrics, and corpus details, see [`medium/README.md`](medium/README.md).
