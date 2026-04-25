@@ -10,7 +10,7 @@ The question sets are designed to evaluate **hybrid search pipelines** (graph + 
 
 | Folder | Files | Purpose |
 |---|---|---|
-| `small/` | 2 | Smoke test — fast pipeline sanity check |
+| `small/` | 2 | Smoke test — 1 HTML 10-K + 1 PDF cover-page 8-K |
 | `medium/` | 15 | Standard evaluation — 5 Fortune 500 companies, 3 filing types |
 | `large/` | 60 | End-to-end system test (in progress) |
 
@@ -20,6 +20,7 @@ The question sets are designed to evaluate **hybrid search pipelines** (graph + 
 
 | File | Status | Description |
 |---|---|---|
+| `small/question-set-6.jsonl` | **Ready** | 6 smoke-test questions (S001–S006); see `small/README.md` |
 | `medium/question-set-60.jsonl` | **Ready** | 60 verified questions (Q061–Q120) grounded in XBRL; see `medium/README.md` |
 | `sample-question-set.jsonl` | Draft | Early sample questions, answers unverified — do not use for evaluation |
 
