@@ -1,6 +1,6 @@
 # fin-rag-bench / medium
 
-**A GraphRAG evaluation benchmark for financial document retrieval — 60 questions grounded in real SEC filings from five Fortune 500 companies.**
+**A GraphRAG evaluation benchmark for financial document retrieval — 100 questions across three question sets, grounded in real SEC filings from five Fortune 500 companies.**
 
 ---
 
@@ -25,20 +25,30 @@ A system that scores well on `pure_vector` but poorly on `hybrid` has strong ret
 | Company | Ticker | Exchange | Files |
 |---|---|---|---|
 | Apple Inc. | AAPL | Nasdaq | `aapl-10k.htm`, `aapl-10q.html`, `aapl-8k.html` |
-| Johnson & Johnson | JNJ | NYSE | `jnj-10q.html`, `jnj-8k.pdf` |
-| Exxon Mobil Corporation | XOM | NYSE | `xom-10k.pdf`, `xom-8k.htm` |
+| Johnson & Johnson | JNJ | NYSE | `jnj-10k.pdf`, `jnj-10q.html`, `jnj-8k.pdf` |
+| Exxon Mobil Corporation | XOM | NYSE | `xom-10k.pdf`, `xom-8k.htm`, `xom-10q.pdf` |
 | Walmart Inc. | WMT | NYSE | `wmt-10k.html`, `wmt-10q.htm`, `wmt-8k.pdf` |
-| JPMorgan Chase & Co. | JPM | NYSE | `jpm-10k.html`, `jpm-8k.html` |
+| JPMorgan Chase & Co. | JPM | NYSE | `jpm-10k.html`, `jpm-10q.pdf`, `jpm-8k.html` |
 
 All filings reflect periods ending in 2025 or early 2026. Financial figures are verified against inline XBRL tags where available.
 
-> **Note on fiscal calendars:** Walmart's fiscal year ends January 31 (FY2025 = Feb 1, 2024 – Jan 31, 2025). ExxonMobil and JPMorgan end December 31. Apple ends the last Saturday of September. Johnson & Johnson ends December 31. Questions specify the exact period in their text to avoid ambiguity.
+> **Note on fiscal calendars:** Walmart's fiscal year ends January 31 (FY2025 = Feb 1, 2024 – Jan 31, 2025). ExxonMobil and JPMorgan end December 31. Apple ends the last Saturday of September. Johnson & Johnson ends the last Sunday of December. Questions specify the exact period in their text to avoid ambiguity.
 
 ---
 
-## Question Set
+## Question Sets
 
-`question-set-60.jsonl` contains 60 questions (IDs Q061–Q120), one JSON object per line.
+Three question sets are available, designed for different evaluation purposes:
+
+| File | IDs | Questions | Focus | Status |
+|---|---|---|---|---|
+| `question-set-60-html-focused.jsonl` | Q061–Q120 | 60 | HTML/HTM filings | **Ready** |
+| `question-set-40-pdf-focused.jsonl` | Q121–Q160 | 40 | PDF filings | **Ready** |
+| `question-set-100-all-file-types.jsonl` | Q061–Q160 | 100 | All file types (merged) | **Ready** |
+
+- Use **`question-set-60-html-focused.jsonl`** as a standalone evaluation focused on HTML/HTM retrieval quality.
+- Use **`question-set-40-pdf-focused.jsonl`** to isolate PDF parsing and retrieval performance.
+- Use **`question-set-100-all-file-types.jsonl`** for a full mixed-format evaluation; it is the union of the 60 and 40 sets.
 
 ### Schema
 
@@ -72,7 +82,9 @@ All filings reflect periods ending in 2025 or early 2026. Financial figures are 
 
 ## Coverage
 
-### By Company
+### 60-Question HTML-Focused Set (Q061–Q120)
+
+#### By Company
 
 | Company | Questions | IDs |
 |---|---|---|
@@ -83,20 +95,78 @@ All filings reflect periods ending in 2025 or early 2026. Financial figures are 
 | JPMorgan Chase & Co. | 10 | Q106–Q115 |
 | Multi-company cross-filing | 5 | Q116–Q120 |
 
-### By Tier
+#### By Tier
 
-| Tier | Count | Notes |
-|---|---|---|
-| `pure_vector` | 34 | Single-filing lookups; tests dense retrieval precision |
-| `hybrid` | 16 | Cross-period or cross-company comparisons requiring both graph and vector |
-| `pure_graph` | 10 | Entity properties (state of incorporation, ticker symbol, filing structure) |
+| Tier | Count |
+|---|---|
+| `pure_vector` | 34 |
+| `hybrid` | 16 |
+| `pure_graph` | 10 |
 
-### By Difficulty
+#### By Difficulty
 
 | Difficulty | Count |
 |---|---|
 | easy | ~31 |
 | medium | ~29 |
+
+---
+
+### 40-Question PDF-Focused Set (Q121–Q160)
+
+#### By Company
+
+| Company | Questions | IDs |
+|---|---|---|
+| Johnson & Johnson | 14 | Q121–Q134 |
+| Exxon Mobil Corporation | 10 | Q135–Q144 |
+| JPMorgan Chase & Co. | 10 | Q145–Q154 |
+| Multi-company cross-filing | 6 | Q155–Q160 |
+
+#### By Tier
+
+| Tier | Count |
+|---|---|
+| `pure_vector` | 26 |
+| `hybrid` | 10 |
+| `pure_graph` | 4 |
+
+#### By Difficulty
+
+| Difficulty | Count |
+|---|---|
+| easy | 17 |
+| medium | 23 |
+
+---
+
+### 100-Question Combined Set (Q061–Q160)
+
+#### By Company
+
+| Company | Questions |
+|---|---|
+| Johnson & Johnson | 27 |
+| Exxon Mobil Corporation | 22 |
+| JPMorgan Chase & Co. | 20 |
+| Walmart Inc. | 12 |
+| Multi-company cross-filing | 10 |
+| Apple Inc. | 9 |
+
+#### By Tier
+
+| Tier | Count |
+|---|---|
+| `pure_vector` | 60 |
+| `hybrid` | 26 |
+| `pure_graph` | 14 |
+
+#### By Difficulty
+
+| Difficulty | Count |
+|---|---|
+| easy | 47 |
+| medium | 53 |
 
 ---
 
@@ -115,7 +185,7 @@ The answer requires navigating a graph structure to identify which documents are
 Answer: Requires reading both the FY2024 and FY2025 columns from the comparative income statement — same file, different temporal contexts.
 
 **Example (Q116):** *"Among all five companies in the corpus, which company had the largest total assets as of its most recent fiscal year-end?"*
-Answer: Requires extracting total assets from five separate filings and comparing: JPM $4.42T, XOM $449B, WMT balance sheet << revenue figure, AAPL $331B, JNJ $192.8B.
+Answer: Requires extracting total assets from five separate filings and comparing: JPM $4.42T, XOM $449B, JNJ $199B, WMT balance sheet (much smaller than revenue), AAPL $331B.
 
 ### `pure_graph`
 The answer is a graph-level property of an entity node (company metadata, filing relationships, listed securities) rather than financial statement data. These questions evaluate whether the system models entities and their relationships, not just passages.
@@ -137,9 +207,10 @@ Answer: Four — common stock plus three note series (XOM, XOM28, XOM32, XOM39A)
 `answer_notes` fields cite the specific XBRL element name and context reference (e.g., `c-1: Feb 1, 2024 – Jan 31, 2025`) that produces the ground-truth value. This enables deterministic verification without re-reading prose.
 
 ### Known Corpus Limitations
-- `jnj-8k.pdf`, `jpm-10q.pdf`, `wmt-8k.pdf`, `xom-10q.pdf`, and `jnj-10k.pdf` are PDF-format filings. Cover-page metadata (entity name, EIN, address) is accessible, but dense financial statement content requires PDF parsing.
-- Q118 and Q119 reflect this asymmetry: three companies have machine-readable HTML 8-Ks; two (JNJ, WMT) filed PDF-only 8-Ks for the January 2026 window.
-- This batch (Q061–Q120) skews toward HTML/HTM sources. Only the final two questions involve PDF-format content. Future batches should distribute questions more evenly across file formats to avoid retrieval format bias.
+- Several PDF files are cover-page-only EDGAR submissions: `jnj-8k.pdf`, `wmt-8k.pdf`, and `xom-10q.pdf` contain only the SEC cover page, not the full filing content. Financial statement data cannot be retrieved from these files.
+- `jnj-10k.pdf` (130 pages) and `jpm-10q.pdf` (270 pages) are complete PDF filings with full financial statement content.
+- Q118 and Q119 reflect the cover-page asymmetry: three companies have machine-readable HTML 8-Ks; two (JNJ, WMT) filed PDF-only 8-Ks for the January 2026 window.
+- Corpus-scoped questions (Q116–Q120) reference "all five companies" as a closed set and cannot be reused verbatim in the large test without rewriting.
 
 ---
 
@@ -156,14 +227,20 @@ Q099 asks about Walmart's FY2024 net income as reported *inside* the FY2025 10-K
 **Terminology mismatch (Q107 — JPMorgan investment banking).**
 "Investment banking revenue" in Q107 corresponds to the line item labeled **"Investment banking fees"** in the JPMorgan 10-K. The XBRL tag (`InvestmentBankingRevenue`) uses the canonical term, but a system matching against display labels may miss this. This type of question is a useful stress test for terminology normalization.
 
-**Intentional cover-page-only PDF files (Q118).**
-`jnj-8k.pdf` and `wmt-8k.pdf` were added deliberately to test hallucination resilience: both are real 8-K filings (JNJ: January 21, 2026; WMT: January 15, 2026) but contain only the SEC cover page, not the earnings press release. A well-behaved system should acknowledge these filings exist while correctly reporting that their content cannot be verified from the corpus. The initial `answer_notes` draft incorrectly stated the two companies had no 8-K filings at all — this was caught and corrected.
+**JNJ revenue label (Q121 — "Sales to customers").**
+Johnson & Johnson labels its top-line revenue "Sales to customers" rather than "Revenue" or "Net revenue." This label is used consistently in both the HTML 10-Q and PDF 10-K. A system that searches for "revenue" may miss the JNJ income statement entirely. Both segment revenues sum to the same consolidated total — JNJ has no revenue outside its two reporting segments (Innovative Medicine and MedTech).
+
+**Intentional cover-page-only PDF files (Q118, Q160).**
+`jnj-8k.pdf`, `wmt-8k.pdf`, and `xom-10q.pdf` were included deliberately to test hallucination resilience. All three are real EDGAR filings but contain only the SEC cover page. Notably, `xom-10q.pdf` appears as a single-page inline EDGAR viewer screenshot rather than a full quarterly report — a system that attempts to extract XOM quarterly financials from it is failing. By contrast, `jpm-10q.pdf` is a complete 270-page 10-Q with full financial statements, making the JPM/XOM 10-Q pair a useful asymmetry test (Q160).
+
+**Shared auditor across three companies (Q156).**
+PricewaterhouseCoopers LLP (PCAOB ID 238) audits Johnson & Johnson, Exxon Mobil, and JPMorgan Chase — confirmed from their respective 10-K filings. Apple and Walmart both use Ernst & Young LLP. The initial Q156 draft incorrectly stated JPMorgan's auditor was unverified; this was caught during manual review of the JPM 10-K Item 8 and corrected.
 
 **Corpus-scoped questions are not portable to larger test sets (Q116–Q120).**
 Several questions reference "all five companies in the corpus" as a closed set. These questions are specific to the medium test (5 companies) and cannot be reused verbatim in the large test (20 companies) without rewriting. When scaling questions to larger corpora, replace closed-set phrasing with explicit company lists or add a corpus-scope field to the schema.
 
 **System correctly prioritized logical correctness over recency (Q116).**
-Q116 asks which company had the *largest* total assets at its most recent fiscal year-end. JPMorgan's year-end 2024 balance ($4,002,814M) is lower than year-end 2025 ($4,424,900M), so the system correctly used the 2025 figure (the most recent) rather than the larger historical value. This is the expected behavior — and a signal that the system understood "most recent" as a temporal constraint, not a maximization objective.
+Q116 asks which company had the *largest* total assets at its most recent fiscal year-end. JPMorgan's year-end 2024 balance ($4,002,814M) is lower than year-end 2025 ($4,424,900M), so the system correctly used the 2025 figure (the most recent) rather than the larger historical value. This is the expected behavior — a signal that the system understood "most recent" as a temporal constraint, not a maximization objective.
 
 ---
 
@@ -171,24 +248,41 @@ Q116 asks which company had the *largest* total assets at its most recent fiscal
 
 This benchmark was built as part of a GraphRAG pipeline evaluation project targeting financial document understanding. The goal is to produce a question set where retrieval tier is the primary differentiator of system performance — not question difficulty or domain knowledge — so that architectural comparisons between pure vector search, hybrid graph+vector, and structured graph query are meaningful and reproducible.
 
-The 60 questions here (Q061–Q120) form a self-contained evaluation set. A complementary first batch (Q001–Q060) covers the same corpus with overlapping but distinct coverage, enabling held-out test / validation splits.
+The three question sets here form a layered evaluation suite. The 60-question HTML-focused set provides a clean baseline for dense retrieval. The 40-question PDF-focused set isolates format-specific parsing challenges. The 100-question combined set enables full mixed-format evaluation and held-out test/validation splits.
 
 ---
 
 ## Quick Start
 
 ```bash
-# Run your RAG system against the question set
+# Run against the HTML-focused 60-question set (Q061–Q120)
 python evaluate.py \
-  --questions question-set-60.jsonl \
+  --questions question-set-60-html-focused.jsonl \
   --corpus files/ \
-  --output results.jsonl
+  --output results-60.jsonl
+
+# Run against the PDF-focused 40-question set (Q121–Q160)
+python evaluate.py \
+  --questions question-set-40-pdf-focused.jsonl \
+  --corpus files/ \
+  --output results-40.jsonl
+
+# Run against the full mixed-format 100-question set (Q061–Q160)
+python evaluate.py \
+  --questions question-set-100-all-file-types.jsonl \
+  --corpus files/ \
+  --output results-100.jsonl
 
 # Filter to a specific tier
-jq 'select(.tier == "hybrid")' question-set-60.jsonl
+jq 'select(.tier == "hybrid")' question-set-100-all-file-types.jsonl
 
 # Count questions by company
-jq -r '.company' question-set-60.jsonl | sort | uniq -c | sort -rn
+jq -r '.company' question-set-100-all-file-types.jsonl | sort | uniq -c | sort -rn
+
+# Count questions by tier across all three sets
+for f in question-set-60-html-focused.jsonl question-set-40-pdf-focused.jsonl question-set-100-all-file-types.jsonl; do
+  echo "=== $f ==="; jq -r '.tier' "$f" | sort | uniq -c
+done
 ```
 
 ---

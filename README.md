@@ -11,18 +11,20 @@ The question sets are designed to evaluate **hybrid search pipelines** (graph + 
 | Folder | Files | Purpose |
 |---|---|---|
 | `small/` | 2 | Smoke test — 1 HTML 10-K + 1 PDF cover-page 8-K |
-| `medium/` | 15 | Standard evaluation — 5 Fortune 500 companies, 3 filing types |
+| `medium/` | 15 | Standard evaluation — 5 Fortune 500 companies, 3 filing types, mixed HTML and PDF |
 | `large/` | 60 | End-to-end system test (in progress) |
 
 ---
 
 ## Question Sets
 
-| File | Status | Description |
-|---|---|---|
-| `small/question-set-6.jsonl` | **Ready** | 6 smoke-test questions (S001–S006); see `small/README.md` |
-| `medium/question-set-60.jsonl` | **Ready** | 60 verified questions (Q061–Q120) grounded in XBRL; see `medium/README.md` |
-| `sample-question-set.jsonl` | Draft | Early sample questions, answers unverified — do not use for evaluation |
+| File | IDs | Questions | Status | Description |
+|---|---|---|---|---|
+| `small/question-set-6.jsonl` | S001–S006 | 6 | **Ready** | Smoke-test questions; see `small/README.md` |
+| `medium/question-set-60-html-focused.jsonl` | Q061–Q120 | 60 | **Ready** | HTML/HTM-focused evaluation set |
+| `medium/question-set-40-pdf-focused.jsonl` | Q121–Q160 | 40 | **Ready** | PDF-focused evaluation set |
+| `medium/question-set-100-all-file-types.jsonl` | Q061–Q160 | 100 | **Ready** | Full mixed-format set (union of the 60 and 40) |
+| `sample-question-set.jsonl` | — | — | Draft | Early sample questions, answers unverified — do not use for evaluation |
 
 ---
 
@@ -44,4 +46,4 @@ The question sets are designed to evaluate **hybrid search pipelines** (graph + 
 - **`hybrid`** — Cross-document or cross-period comparison requiring graph navigation + vector extraction
 - **`pure_graph`** — Entity and relationship queries (incorporation state, ticker, filing structure)
 
-For full methodology, scoring rubrics, and corpus details, see [`medium/README.md`](medium/README.md).
+For full methodology, scoring rubrics, corpus details, and curation notes, see [`medium/README.md`](medium/README.md).
